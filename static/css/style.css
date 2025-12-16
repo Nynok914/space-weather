@@ -1,0 +1,743 @@
+/* ===== CSS Variables (Dark Theme) ===== */
+:root {
+  /* Основные цвета */
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-card: #2d2d2d;
+  --bg-hover: #3a3a3a;
+
+  
+  /* Акцентные цвета для бурь */
+  --accent-calm: #4CAF50;
+  --accent-weak: #FFC107;
+  --accent-moderate: #FF9800;
+  --accent-strong: #FF5722;
+  --accent-severe: #E91E63;
+  --accent-extreme: #9C27B0;
+  
+  /* Текст */
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --text-muted: #808080;
+  
+  /* Границы */
+  --border-color: #404040;
+  --border-radius: 12px;
+}
+
+/* ===== Base Styles ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ===== Header Styles ===== */
+.header {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  border-bottom: 1px solid var(--border-color);
+  padding: 20px 0;
+  margin-bottom: 30px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.location-time {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.city {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.date, .time {
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.weather-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.sun-times {
+  display: flex;
+  gap: 15px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.day-divider {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.day-divider img {
+  max-width: 100%;
+  height: auto;
+  opacity: 0.8;
+}
+
+/* ===== Main Content Styles ===== */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 30px;
+  align-items: start;
+}
+
+/* ===== Forecast Container ===== */
+.forecast-container {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 25px;
+  border: 1px solid var(--border-color);
+}
+
+.forecast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.forecast-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.forecast-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.nav-btn.active {
+  background: var(--accent-weak);
+  color: var(--bg-primary);
+  border-color: var(--accent-weak);
+}
+
+/* ===== Day Forecast Styles ===== */
+.day-forecast {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.day-forecast.today {
+  border-left: 4px solid var(--accent-weak);
+}
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.day-header h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.day-header .date {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.storm-indicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.storm-level {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.kp-scale {
+  background: var(--accent-weak);
+  color: var(--bg-primary);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* ===== Hourly Forecast Styles ===== */
+.hourly-forecast {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 15px;
+}
+
+.hour-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.hour-slot:hover {
+  transform: translateY(-2px);
+  background: var(--bg-hover);
+}
+
+.hour-slot .time {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.kp-value {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: white;
+}
+
+/* Kp Value Colors */
+.kp-value.calm { background: var(--accent-calm); }
+.kp-value.weak { background: var(--accent-weak); color: #000; }
+.kp-value.moderate { background: var(--accent-moderate); }
+.kp-value.strong { background: var(--accent-strong); }
+.kp-value.severe { background: var(--accent-severe); }
+.kp-value.extreme { background: var(--accent-extreme); }
+
+/* ===== Sidebar Styles ===== */
+.sidebar {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 25px;
+  border: 1px solid var(--border-color);
+}
+
+.storm-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.legend-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.color-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.color-dot.calm { background: var(--accent-calm); }
+.color-dot.weak { background: var(--accent-weak); }
+.color-dot.moderate { background: var(--accent-moderate); }
+.color-dot.strong { background: var(--accent-strong); }
+.color-dot.severe { background: var(--accent-severe); }
+.color-dot.extreme { background: var(--accent-extreme); }
+
+.legend-item span:last-child {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .header-top {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .location-time {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .weather-stats {
+    justify-content: center;
+  }
+  
+  .forecast-header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .hourly-forecast {
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 10px;
+  }
+  
+  .hour-slot {
+    padding: 8px 5px;
+  }
+  
+  .hour-slot .time {
+    font-size: 11px;
+  }
+  
+  .kp-value {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .forecast-container,
+  .sidebar {
+    padding: 15px;
+  }
+  
+  .storm-indicator {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+/* ===== Loading and Error States ===== */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+.error {
+    text-align: center;
+    padding: 40px;
+    color: var(--accent-strong);
+    font-size: 16px;
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--accent-strong);
+}
+
+.no-data {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+/* ===== Forecast Styles Update ===== */
+.day-forecast {
+    background: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease;
+}
+
+.day-forecast:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.day-forecast.today {
+    border-left: 4px solid var(--accent-weak);
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+}
+
+.hourly-forecast {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.hour-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 8px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.hour-slot:hover {
+    background: var(--bg-hover);
+    transform: scale(1.05);
+}
+
+.storm-indicator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-weak);
+}
+
+.kp-scale {
+    background: var(--accent-weak);
+    color: var(--bg-primary);
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 100px;
+    text-align: center;
+}
+/* ===== Rounded Header with Gradient ===== */
+.header {
+    margin-bottom: 40px;
+    position: relative;
+    width: 100%;
+}
+
+.header-background {
+    background: linear-gradient(135deg, 
+        #0a1a3a 0%, 
+        #1a2b5a 25%, 
+        #2a3b6a 50%, 
+        #1a2b5a 75%, 
+        #0a1a3a 100%);
+    border-radius: 0 0 40px 40px;
+    padding: 30px 0 20px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(10, 26, 58, 0.5);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    margin: 0 auto;
+    width: 100%;
+}
+
+.header-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(74, 144, 226, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(138, 43, 226, 0.2) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.05) 100%);
+    pointer-events: none;
+}
+
+/* Убедитесь что контейнер внутри header имеет отступы */
+.header-content.container {
+    padding: 0 20px;
+}
+
+.time-scale.container {
+    padding: 15px 20px 0 20px;
+}
+
+/* Фоны для разных времени суток */
+.header-background.night {
+    background: linear-gradient(135deg, 
+        #0a0f2d 0%, 
+        #1a1f4b 25%, 
+        #25285a 50%, 
+        #1a1f4b 75%, 
+        #0a0f2d 100%);
+}
+
+.header-background.morning {
+    background: linear-gradient(135deg, 
+        #1a237e 0%, 
+        #303f9f 25%, 
+        #3949ab 50%, 
+        #303f9f 75%, 
+        #1a237e 100%);
+}
+
+.header-background.day {
+    background: linear-gradient(135deg, 
+        #1565c0 0%, 
+        #1976d2 25%, 
+        #2196f3 50%, 
+        #1976d2 75%, 
+        #1565c0 100%);
+}
+
+.header-background.evening {
+    background: linear-gradient(135deg, 
+        #311b92 0%, 
+        #4527a0 25%, 
+        #5e35b1 50%, 
+        #4527a0 75%, 
+        #311b92 100%);
+}
+
+/* Стили для информации о местоположении */
+.location-info {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.city {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
+}
+
+.current-time {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.current-time .date,
+.current-time .time {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Стили для фаз солнца */
+.sun-phases {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.sun-phase {
+    text-align: center;
+    padding: 15px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+.sun-phase:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.phase-name {
+    display: block;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 8px;
+    font-weight: 400;
+}
+
+.phase-time {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Горизонтальная шкала времени */
+.time-scale {
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.scale-labels span {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+.scale-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.scale-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+}
+
+.current-time-marker {
+    position: absolute;
+    top: -4px;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #ffd700, #ff9800);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    border: 2px solid white;
+    z-index: 3;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .header-background {
+        border-radius: 0 0 30px 30px;
+        padding: 25px 0 15px 0;
+    }
+    
+    .sun-phases {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .city {
+        font-size: 28px;
+    }
+    
+    .current-time {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .current-time .date,
+    .current-time .time {
+        width: 180px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-background {
+        border-radius: 0 0 20px 20px;
+    }
+    
+    .sun-phases {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .scale-labels span {
+        font-size: 10px;
+    }
+}
+
+/* Принудительное закругление если не работает */
+.header-background {
+    border-bottom-left-radius: 40px !important;
+    border-bottom-right-radius: 40px !important;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .sun-phases {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .city {
+        font-size: 24px;
+    }
+    
+    .current-time {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sun-phases {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .scale-labels span {
+        font-size: 10px;
+    }
+}

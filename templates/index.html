@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="forecast-container">
+    <div class="forecast-header">
+        <h1>Магнитные бури</h1>
+        <div class="forecast-nav">
+            <button class="nav-btn active">На 3 дня</button>
+        </div>
+    </div>
+    
+    <div id="forecast-days">
+        <div class="loading">Загрузка прогноза...</div>
+    </div>
+</div>
+
+<script>
+async function loadWeatherData() {
+    try {
+        const response = await fetch('/api/forecast');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const text = await response.text();
+        console.log('Raw response:', text);
+        
+        const data = JSON.parse(text);
+        renderForecast(data);
+        
+    } catch (error) {
+        console.error('Ошибка загрузки:', error);
+        showError('Ошибка загрузки: ' + error.message);
+    }
+}
+
+function renderForecast(data) {
+    const container = document.getElementById('forecast-days');
+    
+    if (!data || !data.days || data.days.length === 0) {
+        container.innerHTML = '<div class="error">Нет данных прогноза</div>';
+        return;
+    }
+    
+    let html = '';
+    
+    data.days.forEach((dayData, index) => {
+        const isToday = index === 0;
+        const dayClass = isToday ? 'day-forecast today' : 'day-forecast';
+        
+        const maxKp = Math.max(...dayData.data.values);
+        const stormLevel = getStormLevel(maxKp);
+        
+        html += `
+            <div class="${dayClass}">
+                <div class="day-header">
+                    <h3>${dayData.day}</h3>
+                    <span class="date">${dayData.date}</span>
+                </div>
+                <div class="storm-indicator">
+                    <span class="storm-level">${stormLevel}</span>
+                    <div class="kp-scale">Макс. Kp: ${maxKp}</div>
+                </div>
+                <div class="hourly-forecast">
+                    ${renderHourlyForecast(dayData.data.values, dayData.data.times)}
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function renderHourlyForecast(values, times) {
+    let html = '';
+    
+    for (let i = 0; i < Math.min(values.length, times.length); i++) {
+        const kpValue = values[i];
+        const time = times[i];
+        const kpClass = getKpColorClass(kpValue);
+        
+        html += `
+            <div class="hour-slot">
+                <span class="time">${time}</span>
+                <div class="kp-value ${kpClass}">${kpValue}</div>
+            </div>
+        `;
+    }
+    
+    return html;
+}
+
+function getKpColorClass(kpValue) {
+    if (kpValue >= 9) return 'extreme';
+    if (kpValue >= 8) return 'severe';
+    if (kpValue >= 7) return 'strong';
+    if (kpValue >= 6) return 'moderate';
+    if (kpValue >= 5) return 'weak';
+    return 'calm';
+}
+
+function getStormLevel(kpValue) {
+    if (kpValue >= 9) return 'Экстремальная буря';
+    if (kpValue >= 8) return 'Очень сильная буря';
+    if (kpValue >= 7) return 'Сильная буря';
+    if (kpValue >= 6) return 'Умеренная буря';
+    if (kpValue >= 5) return 'Слабая буря';
+    return 'Спокойное';
+}
+
+function showError(message) {
+    const container = document.getElementById('forecast-days');
+    container.innerHTML = `<div class="error">${message}</div>`;
+}
+
+// Функции для шапки с изменяющимся фоном
+function updateHeaderBackground() {
+    const header = document.getElementById('main-header');
+    const headerBg = header.querySelector('.header-background');
+    const now = new Date();
+    const hours = now.getHours();
+    
+    
+    headerBg.classList.remove('night', 'morning', 'day', 'evening');
+    
+    // Добавляем класс в зависимости от времени суток
+    if (hours >= 21 || hours < 5) {
+        headerBg.classList.add('night');
+    } else if (hours >= 5 && hours < 9) {
+        headerBg.classList.add('morning');
+    } else if (hours >= 9 && hours < 17) {
+        headerBg.classList.add('day');
+    } else {
+        headerBg.classList.add('evening');
+    }
+}
+
+function updateTimeScale() {
+    const now = new Date();
+    const minutesSinceMidnight = now.getHours() * 60 + now.getMinutes();
+    const percentage = (minutesSinceMidnight / (24 * 60)) * 100;
+    
+    const marker = document.getElementById('time-marker');
+    if (marker) {
+        marker.style.left = `${percentage}%`;
+    }
+}
+
+function updateSunTimes() {
+    const now = new Date();
+    const times = calculateSunTimes(now);
+    
+    document.getElementById('dawn-start').textContent = times.dawnStart;
+    document.getElementById('sunrise-time').textContent = times.sunrise;
+    document.getElementById('solar-noon').textContent = times.solarNoon;
+    document.getElementById('sunset-time').textContent = times.sunset;
+    document.getElementById('dusk-end').textContent = times.duskEnd;
+}
+
+function calculateSunTimes(date) {
+    // Упрощенный расчет времени солнца для Москвы
+    const month = date.getMonth();
+    
+    return {
+        dawnStart:   '06:34',
+        sunrise:   '08:55',
+        solarNoon: '12:26',
+        sunset:   '15:58',
+        duskEnd:   '18:19',
+    };
+}
+
+function updateHeaderTime() {
+    const now = new Date();
+    
+    // Обновляем дату и время
+    document.getElementById('current-time').textContent = 
+        now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('current-date').textContent = 
+        now.toLocaleDateString('ru-RU', { 
+            day: 'numeric', 
+            month: 'long' 
+        });
+    
+    // Обновляем фон и шкалу
+    updateHeaderBackground();
+    updateTimeScale();
+}
+
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+    updateHeaderTime();
+    updateSunTimes();
+    
+    // Обновляем каждую минуту
+    setInterval(updateHeaderTime, 60000);
+    
+    // Загружаем прогноз погоды
+    loadWeatherData();
+});
+</script>
+{% endblock %}

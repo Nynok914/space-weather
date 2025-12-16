@@ -1,0 +1,99 @@
+<!-- components/faq.html -->
+<div class="faq-section">
+    <h2 class="faq-title">Часто задаваемые вопросы</h2>
+    
+    <div class="faq-accordion">
+        <!-- Вопрос 1 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="question-text">Что такое магнитная буря?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Это сильное возмущение магнитного поля Земли, которое резко нарушают его обычный ход и длится от нескольких часов до нескольких суток. Магнитное поле, создаваемое железным ядром планеты, защищает Землю от космической радиации, и усиленное воздействие на него частично нарушает эту защиту.</p>
+            </div>
+        </div>
+        
+        <!-- Вопрос 2 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="question-text">Причины возникновения магнитных бурь?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Магнитные бури возникают из-за вспышек на Солнце, которые выбрасывают в космос поток заряженных частиц. Эти частицы достигают Земли и влияют на её магнитное поле, что приводит к сбоям в работе электрических устройств.</p>
+            </div>
+        </div>
+        
+        <!-- Вопрос 3 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="question-text">Влияние магнитных бурь на человека?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Во множестве исследований о влиянии магнитных бурь на здоровье людей просто сопоставляется статистика медицинских случаев с зафиксированными вспышками на Солнце и магнитными штормами. На данный момент вопрос остаётся открытым и дискуссионным.</p>
+            </div>
+        </div>
+        
+        <!-- Вопрос 4 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span class="question-text">Рекомендации для снижения негативного влияния</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <ul class="recommendations-list">
+                    <li><strong>Уделять особое внимание режиму сна</strong> — даже короткий дневной сон в 20–30 минут помогает снять головную боль и снизить раздражительность.</li>
+                    <li><strong>Правильно питаться</strong> — жирная и жареная пища усугубляет нагрузку на организм, поэтому предпочтение лучше отдавать овощам, лёгким супам, кашам и кисломолочным продуктам.</li>
+                    <li><strong>Физическая активность в этот период должна быть умеренной</strong> — тяжёлые тренировки и марафоны лучше отложить, но прогулка на свежем воздухе, лёгкая йога или растяжка принесут пользу.</li>
+                    <li><strong>Кофе и крепкий чёрный чай лучше свести к минимуму</strong> — заменить их стоит травяными чаями, которые обладают мягким успокаивающим действием и не перегружают сосуды.</li>
+                    <li><strong>В такие дни особенно важно отказаться от алкоголя и сигарет</strong> — эти привычки и без того наносят удар по сосудам, а в сочетании с магнитной бурей эффект становится разрушительным.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon = question.querySelector('.faq-icon');
+        
+        // Инициализация: скрыть все ответы
+        answer.style.maxHeight = '0';
+        answer.style.opacity = '0';
+        
+        question.addEventListener('click', () => {
+            // Закрыть другие открытые вопросы
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    const otherIcon = otherItem.querySelector('.faq-icon');
+                    otherAnswer.style.maxHeight = '0';
+                    otherAnswer.style.opacity = '0';
+                    otherItem.classList.remove('active');
+                    otherIcon.textContent = '+';
+                }
+            });
+            
+            // Переключить текущий вопрос
+            if (item.classList.contains('active')) {
+                answer.style.maxHeight = '0';
+                answer.style.opacity = '0';
+                item.classList.remove('active');
+                icon.textContent = '+';
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                answer.style.opacity = '1';
+                item.classList.add('active');
+                icon.textContent = '−';
+            }
+        });
+    });
+});
+</script>
